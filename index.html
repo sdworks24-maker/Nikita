@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Future Wife | Nikita</title>
+    <style>
+        :root {
+            --primary-love: #ff4b2b;
+            --secondary-love: #ff416c;
+            --soft-pink: #fff5f5;
+            --dark-bg: #1a1a1a;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to right, #ff416c, #ff4b2b);
+            color: white;
+            text-align: center;
+            overflow-x: hidden;
+        }
+
+        header {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        h1 { font-size: 3.5rem; margin-bottom: 10px; text-shadow: 2px 2px 10px rgba(0,0,0,0.3); }
+        .subtitle { font-size: 1.5rem; font-style: italic; opacity: 0.9; }
+        .scroll-hint { margin-top: 20px; font-weight: bold; animation: bounce 2s infinite; }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-10px);}
+            60% {transform: translateY(-5px);}
+        }
+
+        .container { padding: 50px 20px; max-width: 900px; margin: auto; }
+
+        .week-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 50px;
+        }
+
+        .day-card {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px solid transparent;
+            transition: 0.3s;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+        }
+
+        .locked { opacity: 0.5; filter: grayscale(1); cursor: not-allowed; }
+        .active {
+            border-color: white;
+            box-shadow: 0 0 20px rgba(255,255,255,0.5);
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .passed { border-color: rgba(255,255,255,0.3); }
+
+        .message-box {
+            display: none;
+            margin-top: 40px;
+            padding: 40px;
+            background: white;
+            color: #333;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(20px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+
+        .heart {
+            position: fixed;
+            color: rgba(255, 255, 255, 0.4);
+            pointer-events: none;
+            z-index: -1;
+            animation: float linear forwards;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(110vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        footer { padding: 40px; opacity: 0.8; }
+    </style>
+</head>
+<body>
+
+    <audio id="loveSong" loop></audio>
+
+    <header>
+        <h1>Hey Nikita..❤️</h1>
+        <p class="subtitle">To my beautiful future wife, on our first Valentine's Week.</p>
+        <p class="scroll-hint">Please Scroll Below for more ❤️</p>
+    </header>
+
+    <div class="container">
+        <div class="week-grid" id="weekGrid"></div>
+
+        <div id="messageDisplay" class="message-box">
+            <h2 id="msgTitle" style="color: var(--secondary-love); margin-top: 0;"></h2>
+            <p id="msgContent" style="font-size: 1.2rem; line-height: 1.6;"></p>
+            <p style="font-size: 0.9rem; color: #777;">🎵 Music is playing for you...</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>Happy Valentine's Day, My Love!</p>
+        <p style="font-size: 0.8rem;">With love, Saurabh <div class="heart-beat">❤</div></p>
+    </footer>
+
+    <script>
+        const valentineWeek = [
+            { day: 7, name: "Rose Day", msg: "Like a rose, your love fills my life with fragrance. Here is a digital rose for my future wife! 🌹", song: "https://drive.google.com/file/d/1cRiOc5ViHI_fhtSnX-3lswd7_8EZZuXz/view?usp=sharing" },
+            { day: 8, name: "Propose Day", msg: "I've already proposed, but I want to spend every day of my life asking you to be mine. Will you be my forever? 💍", song: "YOUR_MP3_URL_2" },
+            { day: 9, name: "Chocolate Day", msg: "Life is bitter-sweet, but with you, it's mostly just sweet. I owe you a lifetime of chocolates, Nikita! 🍫", song: "YOUR_MP3_URL_3" },
+            { day: 10, name: "Teddy Day", msg: "Whenever I'm not there, just imagine this teddy giving you a hug from me. You are my most precious treasure. 🧸", song: "YOUR_MP3_URL_4" },
+            { day: 11, name: "Promise Day", msg: "I promise to hold your hand through every storm and celebrate every sunshine with you. Forever Saurabh & Nikita. 🤝", song: "YOUR_MP3_URL_5" },
+            { day: 12, name: "Hug Day", msg: "A hug from you is my favorite place in the world. Counting down the days until I can hug you forever. 🤗", song: "YOUR_MP3_URL_6" },
+            { day: 13, name: "Kiss Day", msg: "Sending you a thousand digital kisses today, and a million more in person soon! 💋", song: "YOUR_MP3_URL_7" },
+            { day: 14, name: "Valentine's Day", msg: "Happy First Valentine's Day! You aren't just my fiancé; you are my home, my future, and my heart. I love you! ❤️", song: "YOUR_MP3_URL_8" }
+        ];
+
+        const today = new Date();
+        const currentMonth = today.getMonth() + 1; 
+        const currentDate = today.getDate();
+
+        const grid = document.getElementById('weekGrid');
+        const msgDisplay = document.getElementById('messageDisplay');
+        const msgTitle = document.getElementById('msgTitle');
+        const msgContent = document.getElementById('msgContent');
+        const audio = document.getElementById('loveSong');
+
+        valentineWeek.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'day-card';
+            
+            // FEBRUARY = 2
+            const isFebruary = (currentMonth === 2);
+
+            if (isFebruary && currentDate === item.day) {
+                card.classList.add('active');
+                card.innerHTML = `<h3>Feb ${item.day}</h3><p>${item.name}</p><strong>OPEN TODAY!</strong>`;
+                card.onclick = () => showMessage(item);
+            } else if (isFebruary && currentDate > item.day) {
+                card.classList.add('passed');
+                card.innerHTML = `<h3>Feb ${item.day}</h3><p>${item.name}</p>`;
+                card.onclick = () => showMessage(item, true);
+            } else {
+                card.classList.add('locked');
+                card.innerHTML = `<h3>Feb ${item.day}</h3><p>${item.name}</p><span>🔒 Locked</span>`;
+                card.onclick = () => alert("Patience, Nikita! This surprise opens on Feb " + item.day + "! 😉");
+            }
+            grid.appendChild(card);
+        });
+
+        function showMessage(item, isOld = false) {
+            msgDisplay.style.display = 'block';
+            msgTitle.innerText = item.name;
+            msgContent.innerText = isOld ? item.msg + " (Re-reading an old memory)" : item.msg;
+            
+            // Music Logic
+            if(item.song && item.song !== "YOUR_MP3_URL_X") {
+                audio.src = item.song;
+                audio.play().catch(error => {
+                    console.log("Autoplay prevented. Click anywhere to play.");
+                });
+            }
+
+            window.scrollTo({ top: msgDisplay.offsetTop - 50, behavior: 'smooth' });
+        }
+
+        // Floating Hearts
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.fontSize = Math.random() * 20 + 15 + 'px';
+            heart.style.animationDuration = Math.random() * 3 + 4 + 's';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 7000);
+        }
+        setInterval(createHeart, 400);
+    </script>
+</body>
+</html>
